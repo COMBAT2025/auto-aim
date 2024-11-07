@@ -1,0 +1,74 @@
+cmake_minimum_required(VERSION 3.10)
+project(combat2024)
+
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native -O3 -pthread" )
+add_definitions(-DAIM_CFG="${CMAKE_CURRENT_LIST_DIR}/Aimer.yaml")
+add_definitions(-DANGLE_CFG="${CMAKE_CURRENT_SOURCE_DIR}/AngleSolver.yaml")
+include_directories(AutoShot/include)
+include_directories(tools/include)
+include_directories(others/include)
+include_directories(Military_Module/hero/include)
+include_directories(Military_Module/infantry/include)
+include_directories(Military_Module/engineer/include)
+include_directories(Military_Module/sentry/include)
+include_directories(Military_Module/drone/include)
+link_libraries(/lib/libMVSDK.so)
+add_executable(combat2024
+    tools/include/MathTool.h
+    tools/src/MathTool.cpp
+    tools/include/pid.h
+    tools/src/pid.cpp
+    AutoShot/src/main.cpp
+    AutoShot/src/Filtering.cpp
+    AutoShot/include/Filtering.h
+    AutoShot/include/Combat2024_AllTeam.h
+    AutoShot/src/Armour.cpp
+    AutoShot/include/Armour.h
+    Military_Module/infantry/src/Energy.cpp
+    Military_Module/infantry/include/Energy.h
+    others/src/SerialPort.cpp
+    others/include/SerialPort.h
+    AutoShot/src/Marker.cpp
+    AutoShot/include/Marker.h
+    AutoShot/src/PnpSolver.cpp
+    AutoShot/include/PnpSolver.h
+    AutoShot/src/KalmanFilter.cpp
+    AutoShot/include/KalmanFilter.h
+    others/src/Calibrator.cpp
+    others/include/Calibrator.h
+    AutoShot/include/TrajectorySolving.h
+    tools/src/Matrix.cpp
+    tools/include/Matrix.h
+    tools/src/Setter.cpp
+    tools/include/Setter.h
+    AutoShot/src/FightMode.cpp
+    AutoShot/include/FightMode.h
+    others/include/CameraApi.h
+    others/include/CameraDefine.h
+    others/include/CameraStatus.h
+    others/src/MindVisionCamera.cpp
+    others/include/MindVisionCamera.h
+    Military_Module/hero/include/HEROTHREADS.h
+    AutoShot/src/ArmourFinder.cpp
+    AutoShot/include/ArmourFinder.h
+    AutoShot/src/Svm.cpp
+    AutoShot/include/Svm.h
+    tools/src/TimerBase.cpp
+    tools/include/TimerBase.h
+    Military_Module/infantry/include/INFANTRYTHREADS.h
+    Military_Module/drone/include/DRONETHREADS.h
+    Military_Module/engineer/include/ENGINEERTHREADS.h
+    Military_Module/sentry/include/SENTRYTHREADS.h
+    AutoShot/include/TargetDecision.h
+    AutoShot/src/TargetDecision.cpp
+    AutoShot/src/TrajectorySolving.cpp
+    AutoShot/src/Combat2024_AllTeam.cpp
+    AutoShot/include/gimbal_control.cpp
+    AutoShot/include/gimbal_control.h
+    AutoShot/include/SentryTrajectorySolving.h
+    AutoShot/src/SentryTrajectorySolving.cpp
+    AutoShot/include/EasyFind.h
+    AutoShot/src/EasyFind.cpp
+)
+find_package(OpenCV)
+target_link_libraries(combat2024 ${OpenCV_LIBS})

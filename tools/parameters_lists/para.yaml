@@ -1,0 +1,141 @@
+%YAML:1.0
+---
+#Allaince
+#Nanjing University of Science & Technology
+
+key :                                                     0
+
+# Who am i
+# Blue : 0
+# Green  :1
+# Red :2
+#---------------------------------------------------------#
+whoIam:                                                   2
+#---------------------------------------------------------#
+Youare :                                                  2
+#---------------------------------------------------------#
+
+# Threshold
+Threshold4Gray2Binary :                                   8
+Threshold4Gray2BinaryPowerTrigger :                       50
+
+#cv::imshow()
+isShowOriginImage :                                       0
+isShowGrayImage :                                         0
+isShowFinallyImage :                                      1
+
+#Serial
+SerialPath :                                              /dev/ttyUSB0
+isSerialOnline :                                          0
+isSerialDebug:                                            1
+isSerialDebugIndependently :                              0
+isShowSerialWriteDataIndependentThread :                  0
+isShowSerialReadDataIndependentThread :                   0
+
+isShowSerialWriteDataMainThread :                         0
+isShowSerialReadDataMainThread :                          0
+
+
+#Shoot video
+#isEnableShooting :
+isSaveOriginal :                                          0
+isSaveResultVideo :                                       0
+
+#CameraORvideo
+# DesCription : -2 Video
+#               -1 Industial Camera
+#                0 Common Camera
+frameSource :                                             -1
+VideoPath :                                               ../others/video/20190808Key.avi
+CameraParameterPath :                                     ../others/parameters_lists/camera.xml
+VideoSavePath :                                           ../others/video/ # unused param
+#Calibration
+CalibrationResultPath:                                    ../tools/cr
+CalibrationPointPath:                                     ../tools/ip
+SAVE_IMAGE_PATH:                                          ../others/picture/Calibration
+CornersMatrix :                                           [ 12, 8 ]
+Rectangle:                                                [ 20,20 ]
+#CornersMatrix :                                           [ 4, 4]
+#Rectangle:                                                [ 40,40 ]
+
+#Armor size // mm
+NormalArmorWidth:                                         134
+NormalArmorHeight:                                        56
+LargerArmorWidth:                                         230
+LargerArmorHeight:                                        56
+BigBuffHeight:                                            1
+BigBuffLength:                                            1
+
+
+#variable
+cvWaitKeyTime :                                           1
+
+resolution :                                              [ 960, 600 ] #cv::size
+shootingImageSize :                                       [ 1920, 1200 ]
+Center :                                                  [ 960, 600 ] ### Image Center ### 290
+#Dyaw :                                                    4.5
+Dyaw :                                                    4.5
+#PowerTigger
+PowerTriggerTemplateSzie :                                [ 60, 108 ]
+
+#Threshold 4 Armor
+theMaximumdifference42Leds :                              20
+theMaximumDistance42Leds :                                4.0
+theMinimumDistance42Leds :                                1.2
+
+theMinmumSize4aContours :                                 20
+supLengthOverWidth :                                      10
+infLengthOverWidth :                                      1.8
+#Blue 0.5// red 0.3
+blueColorPercentage :                                     0.5
+redColorPercentage :                                      0.2
+MinmumPossibility :                                       20
+isRecgArmorNum :                                          0
+
+#Number Recognition
+LinearGain :                                              10
+isUsingCNN :                                              1
+CNN :                                                     ../others/CNN/
+Model:                                                    7
+DataSavePath :                                            ../others/picture/VictoryDataSentry/
+DataSaveInterval :                                        15
+dynamParams :                                             4
+measureParams :                                           2
+AdynamParams :                                            2
+AmeasureParams :                                          1
+
+
+camera_Matrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 1.4792802787493342e+03, 0., 4.9282285607788242e+02, 0.,
+       1.4809132389436913e+03, 2.8012135730942526e+02, 0., 0., 1. ]
+dist_Coeffs: !!opencv-matrix
+   rows: 1
+   cols: 5
+   dt: d
+   data: [ -2.7186326088227536e-01, 2.1914786013285346e+00,
+       -6.3787639473589256e-03, -5.0060082719641632e-04,
+       -1.4430812293749606e+01 ]
+
+ModelY: !!opencv-matrix
+  rows: 2
+  cols: 2
+  dt: f
+  data:  [1.,0.2,
+          0.,1.]
+
+ModelP: !!opencv-matrix
+  rows: 2
+  cols: 2
+  dt: f
+  data:  [1.,0.2,
+          0.,1.]
+
+ModelF: !!opencv-matrix
+  rows: 2
+  cols: 2
+  dt: f
+  data:  [1.,0.,
+          0.,1.]
