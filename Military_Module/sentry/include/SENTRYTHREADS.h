@@ -51,7 +51,8 @@ int sentryImageDeal1(Setter &tempSetter,MindVisionCamera &tempCamera,SerialPort 
 
     // 初始化 PID 参数
     Pid_Set(&PID_Pitch, 0.05f, 0.0f, 0.1f, 50.0f, 100, 200, 200, 1.0f, 0.0f, 0.01f, 0);
-    Pid_Set(&PID_Yaw,  0.03f, 0.0f, 0.3f, 50.0f, 100, 200, 200, 1.0f, 0.0f, 0.01f, 0);
+//  Pid_Set(&PID_Yaw,  0.03f, 0.0f, 0.3f, 50.0f, 100, 200, 200, 1.0f, 0.0f, 0.01f, 0);
+    Pid_Set(&PID_Yaw,  0.05f, 0.0f,0.9f, 50.0f, 100, 200, 200, 1.0f, 0.0f, 0.01f, 0);
 
 
     Predict anglePreY(tempSetter.AnglePModelY,1);
@@ -132,7 +133,7 @@ int sentryImageDeal1(Setter &tempSetter,MindVisionCamera &tempCamera,SerialPort 
 //          tempx=tempx*20+totalYaw;
 //          tempx=anglePreF.smooth(tempx);
 //          dx=(tempx-totalYaw)*800/43.84;
-            dx = 10*(preY.at<float>(0) - totalYaw) * 960 / 35.94;
+            dx = 7.5*(preY.at<float>(0) - totalYaw) * 960 / 35.94;
             
             //dy=10.0*(preP.at<float>(0)-totalPitch)*600/28.32;
              preCenter.x = armours[strikeTarget].center.x + dx;
@@ -163,6 +164,21 @@ int sentryImageDeal1(Setter &tempSetter,MindVisionCamera &tempCamera,SerialPort 
             //printf("x上距离%f\n",float(tvec.at<double>(0)));
 //            printf("y上距离%f\n",float(tvec.at<double>(1)));
 //            printf("z上距离%f\n",float(tvec.at<double>(2)));
+            std::vector<cv::Point3f> bestArmours = armourFinder.getArmours(tvec, armourFinder.angle_z);
+            std::cout << bestArmours <<std::endl;
+            // std::vector<cv::Point2f> rightArmour;
+            // std::vector<cv::Point2f> leftArmour;
+
+            // std::vector<cv::Point3f> pointVector1 = { threeArmours[1] };
+            // std::vector<cv::Point3f> pointVector2 = { threeArmours[2] };
+
+            // rightArmour = armourFinder.world2pixel(pointVector1,tempSetter.cameraDistortion);
+            // leftArmour = armourFinder.world2pixel(pointVector2,tempSetter.cameraDistortion);
+
+            // std::cout << rightArmour <<std::endl;
+            // std::cout << leftArmour <<std::endl;
+            // cv::circle(originFrame, rightArmour[0], 10, COLOR_G, 3, 8);
+            // cv::circle(originFrame, leftArmour[0], 10, COLOR_G, 3, 8);
             double distance = sqrt(tvec.at<double>(0) * tvec.at<double>(0) +
                                    tvec.at<double>(1) * tvec.at<double>(1) + tvec.at<double>(2) * tvec.at<double>(2));
             tempSerial.t_package.distance = short(distance/100);
@@ -173,7 +189,7 @@ int sentryImageDeal1(Setter &tempSetter,MindVisionCamera &tempCamera,SerialPort 
             cv::putText(originFrame, dis, cv::Point(50, 50), cv::FONT_HERSHEY_COMPLEX, 1.0, cv::Scalar(255, 0, 255), 2,
                         0);
             result = solveEquation//(25.0,tvec, 30.0,0.0);
-                    (12.5, tvec, nowPitch, nowYaw);
+                    (15, tvec, nowPitch, nowYaw);
             //弹道解算,接下来需要把输出的值变为串口发送需要的类型
             if ((preCodeY > 0 && result.yawAngle < 0)||(preCodeY < 0 && result.yawAngle > 0))
                 if (preCodeY != 10000) {
@@ -188,8 +204,8 @@ int sentryImageDeal1(Setter &tempSetter,MindVisionCamera &tempCamera,SerialPort 
 
             tempSerial.tx_package.pitch = pitchOutput/*result.pitchAngle*/;
             tempSerial.tx_package.yaw = yawOutput ;
-             //std::cout<<"原本Pitch轴转"<<result.pitchAngle<<"码"<<std::endl;
-              //std::cout << "原本Yaw轴转" << result.yawAngle << "码" << std::endl;
+             std::cout<<"原本Pitch轴转"<<result.pitchAngle<<"码"<<std::endl;
+              std::cout << "原本Yaw轴转" << result.yawAngle << "码" << std::endl;
               std::cout<<"Pitch轴转"<<tempSerial.tx_package.pitch<<"码"<<std::endl;
               std::cout << "Yaw轴转" << tempSerial.tx_package.yaw << "码" << std::endl;
             preCodeY = tempSerial.tx_package.yaw;
@@ -201,7 +217,7 @@ int sentryImageDeal1(Setter &tempSetter,MindVisionCamera &tempCamera,SerialPort 
                     if(distance<=6000)
                     {  
                         tempSerial.tx_package.shot=2;
-                        std::cout<<"开火"<<std::endl;
+                        //std::cout<<"开火"<<std::endl;
                     }
                     
                     /*if(tempSerial.tx_package.shot==2)
@@ -209,7 +225,10 @@ int sentryImageDeal1(Setter &tempSetter,MindVisionCamera &tempCamera,SerialPort 
                 }
             }//判断是否发射
         } 
-        else {(*cPtr)++;}
+        else {(*cPtr)++;
+        tempSerial.tx_package.pitch = 0;
+        tempSerial.tx_package.yaw = 0;
+        }
         /*else {
             if (lastTarget != -1) {//判断敌人从哪里消失
                 if (preCodeY < 0) {
