@@ -20,7 +20,7 @@ public:
     char name[5];     //0字符ID，1大小（L,S）,2结束符，3模式（0小1大），4 数字ID
     std::vector<cv::Point2f> concors;
     cv::Point2f center;
-    float angle_z;
+
     /*
      *   ///////////////////////////////////
      *   //                               //

@@ -17,10 +17,17 @@ public:
     double calculateRotationAngle(const Marker& mark1, const Marker& mark2);
     std::vector<Marker> findMark(Setter &tempSetter,cv::Mat &frame);
     std::vector<Armour> findArmour(Setter &tempSetter,cv::Mat &frame,int &cmode);
+    std::vector<cv::Point3f> getArmours(cv::Mat &tvec, float &angle_z);
+    //std::vector<cv::Point2f> world2pixel(std::vector<cv::Point3f> objectPoints,cv::Mat rvec,cv::Mat tvec,CameraDistortion cal);
+    //std::vector<cv::Point2f> world2pixel(std::vector<cv::Point3f> objectPoints,CameraDistortion cal);
     bool findWho;
     void newBin(Setter &tempSetter,cv::Mat &inPut);
-    float avg_X;
-    float angle_z;
+    float avg_X;//所有灯条横坐标均值
+    float center_X;//建模车的中心横坐标
+    float angle_z;//装甲板左右倾斜角
+    float otheravg_Y;//虚假装甲板纵坐标均值
+    float otheravg_X;//虚假装甲板横坐标均值
+     cv::Point2f fakecenter[2];
 private:
     float maxDifference;
     float minDifference;

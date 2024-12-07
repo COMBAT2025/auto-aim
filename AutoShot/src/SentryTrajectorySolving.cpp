@@ -11,7 +11,7 @@ turnAngle solveEquation(float speed,cv::Mat tvec,float pitch,float yaw)
     pitchRad=pitch*pi/180.0;
     yawRad=yaw*pi/180.0;//角度化为弧度
     //单位从毫米变成米
-    x=tvec.at<double>(0)/1000 + 0.07;//手动补偿测距偏差
+    x=tvec.at<double>(0)/1000 + 0.071;//手动补偿测距偏差
     y=tvec.at<double>(1)/1000  ;//这里加的是摄像头与枪管的距离和误差
     z=tvec.at<double>(2)/1000;
     //z =filtering.loop(z);
